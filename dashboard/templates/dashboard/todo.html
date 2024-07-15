@@ -1,0 +1,57 @@
+{% extends 'dashboard/base.html' %} 
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container">
+    <h2 class="text-center mt-4 mb-4"><strong>To-Do List</strong></h2>
+    {% if not todos_done %}
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Details</th> 
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for todo in todos %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ todo.title }}</td>
+                    <td>
+                        <a href="{% url 'update-todo' todo.id %}" class="btn btn-sm {% if todo.is_finished %}btn-success{% else %}btn-secondary{% endif %}">
+                            {% if todo.is_finished %}
+                            Completed
+                            {% else %}
+                            Mark as Completed
+                            {% endif %}
+                        </a>
+                    </td>
+                    <td><a href="{% url 'todo-details' todo.id %}" class="btn btn-sm btn-info">View Details</a></td>
+                    <td><a href="{% url 'delete-todo' todo.id %}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <h4 class="text-center mt-4 mb-4">All tasks have been done!! Create to add more.</h4>
+    {% endif %}
+</div>
+
+<div class="container mt-4">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="border p-4">
+            <legend class="border-bottom mb-4"><strong>Create Todo</strong></legend>
+            {{ form|crispy }}
+            <button class="btn btn-info mt-3" type="submit">Create</button>
+        </fieldset>
+    </form>
+</div>
+
+{% endblock content %}

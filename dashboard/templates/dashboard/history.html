@@ -1,0 +1,23 @@
+{% extends 'dashboard/base.html' %} 
+{% load static %} 
+{% block content %}
+<section class='text-center container'>
+    <h2>Watched Video History</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {% if watched_videos %}
+                <ul class="list-group">
+                    {% for video in watched_videos %}
+                        <li class="list-group-item">
+                            <h4>{{ video.title }}</h4>
+                            <p>{{ video.description }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No watched videos available.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock content %}
